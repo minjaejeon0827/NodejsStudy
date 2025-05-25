@@ -16,13 +16,6 @@
 //       Set-ExecutionPolicy RemoteSigned 라고 입력해보고 에디터 껐다 켜야함. (2025.05.19 minjae)
 // 참고 URL - https://learn.microsoft.com/ko-kr/powershell/module/microsoft.powershell.core/about/about_execution_policies?view=powershell-7.5
 
-// [코딩애플] Node.js, MongoDB 스터디 
-// Part 1 : (신버전)
-// 1강 - 남자라면 서버개발을 할 줄 알아야함
-// 2강 - Nodejs의 장점이 뭐냐면
-// 3강 - Node.js, Express 설치와 셋팅
-
-
 // Node.js 개발환경 셋팅 순서 
 // 1. VSCode 실행 -> 터미널창 열기 -> 터미널창에 순서대로 아래 명령어 입력 및 엔터
 //    npm init -y (package.json 파일 생성)
@@ -43,6 +36,41 @@ app.listen(8080, () => {
 })
 
 // (GET) Rest API - 유저가 메인페이지('/') 접속하면 '반갑다'라는 글자 유저에게 전송
-app.get('/', (요청, 응답) => {
-  응답.send('반갑다')
+// app.get() 도 실은 함수이다. 
+// app.get() 안에서 사용하는 () => {} 부분도 함수 만들어서 집어넣는 문법이다.
+// 이런 식으로 다른 함수 소괄호 안에 들어가는 함수 () => {} 를 멋있는 말로 콜백함수라고 부른다. 
+// 자바스크립트에서 특정 함수들이나 특정 코드들을 순차적으로 차례차례 실행하고 싶을 때 콜백함수를 자주 사용한다. 
+app.get('/', (요청, 응답)=>{
+  // 응답.send('반갑다')
+  // (__dirname이라고 쓰면 (언더바 2개) 현재 server.js 파일의 상위 디렉토리 절대경로가 나옴.)
+  // 근데 index.html은 server.js와 같은 폴더에 있으니까
+  // __dirname 뒤에 /index.html 만 추가하면 index.html 파일경로가 나옴.
+  응답.sendFile(__dirname + '/index.html')   // 누가 메인페이지('/') 방문시 index.html 파일 보내기 
 })
+
+// (GET) Rest API - 유저가 오늘의뉴스('/news') 접속하면 '오늘 비옴'라는 글자 유저에게 전송
+// 이 코드가 어떻게 실행되냐면 
+// 누가 /news로 접속하면 자동으로 app.get() 이라는게 함수가 실행되어서 접속요청을 처리해주는데
+// 근데 app.get 함수가 실행되고 나서 그 다음에 바로 콜백함수 () => {} 내에 있는 코드가 실행됨.
+// 함수 소괄호 안에 들어가는 함수를 '콜백함수'라고 부른다는 것만 상식으로 알아두자. 
+app.get('/news', (요청, 응답)=>{
+  응답.send('오늘 비옴')
+}) 
+
+// (GET) Rest API - 유저가 쇼핑페이지('/shop') 접속하면 '쇼핑페이지입니다'라는 글자 유저에게 전송
+app.get('/shop', (요청, 응답)=>{
+  응답.send('쇼핑페이지입니다')
+}) 
+
+// (GET) Rest API - 유저가 자기소개페이지('/about') 접속하면 about.html 파일 유저에게 전송
+app.get('/about', (요청, 응답)=>{
+  응답.sendFile(__dirname + '/about.html')   // 누가 자기소개페이지('/about') 방문시 about.html 파일 보내기 
+})
+
+
+// [코딩애플] Node.js, MongoDB 스터디 
+// Part 1 : (신버전)
+// 1강 - 남자라면 서버개발을 할 줄 알아야함
+// 2강 - Nodejs의 장점이 뭐냐면
+// 3강 - Node.js, Express 설치와 셋팅
+// 4강 - 웹페이지 보내주려면 (라우팅)
