@@ -54,6 +54,9 @@ app.get('/about', (요청, 응답)=>{
 // 5강 - 웹페이지에 디자인 넣으려면
 // 6강 - MongoDB 호스팅받고 셋팅하기
 
+// MongoDB 초기셋팅 및 호스팅 방법
+// 참고 URL - https://parkdoyoung98.tistory.com/entry/MongoDB-%EC%B4%88%EA%B8%B0%EC%85%8B%ED%8C%85-%EC%B4%88%EA%B0%84%EB%8B%A8-MongoDB-%EC%85%8B%ED%8C%85%ED%95%98%EA%B8%B0-feat-%EB%AC%B4%EB%A3%8C-%ED%98%B8%EC%8A%A4%ED%8C%85
+
 // TODO: 터미널 창 에서 명령어 "node server.js" 입력 및 엔터시 아래와 같은 오류 메시지 출력 시
 //       오류 메시지 "node : 'node' 용어가 cmdlet, 함수, 스크립트 파일 또는 실행할 수 있는 프로그램 이름으로 인식되지 않습니다. 
 //       이름이 정확한지 확인하고 경로가 포함된 경우 경로가 올바른지 검증한 다음 다시 시도하십시오."
