@@ -7,9 +7,27 @@ const app = express()
 // 참고로 css, js, 이미지 파일들을 static 파일들이라고 부른다. 
 app.use(express.static(__dirname + '/public'));
 
-// 실제 웹서버 8080포트에 띄우기 (실제 웹서버 실행하는 내 컴퓨터에 PORT 8080 하나 오픈하는 문법 의미)
-app.listen(8080, () => {
-  console.log('http://localhost:8080 에서 서버 실행중')
+// 설치한 mongodb 라이브러리 불러오는 코드
+const { MongoClient } = require('mongodb')
+
+let db
+// DB접속 URL은 어딨냐면 mongodb 사이트가서 connect 버튼이 어딘가 있을텐데 눌러서 Driver를 선택해보자. 
+// DB접속용 아이디 / 비번자리에 여러분이 만든 DB접속용 아이디(admin) / 비번(qwer1234)을 잘 집어넣자.
+// 주의사항 - mongodb.com 로그인할 때 쓰는 아이디 비번 아님 
+// const url = 'mongodb사이트에 있던 님들의 DB 접속 URL'
+const url = 'mongodb+srv://admin:qwer1234@cluster0.mcxoql2.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0'
+// 호스팅받은 mongodb에 접속하고 접속 결과를 db라는 변수에 저장
+new MongoClient(url).connect().then((client)=>{
+  console.log('DB연결성공')
+  db = client.db('forum')   // 'forum' 데이터베이스 연결
+
+  // 실제 웹서버 8080포트에 띄우기 (실제 웹서버 실행하는 내 컴퓨터에 PORT 8080 하나 오픈하는 문법 의미)
+  app.listen(8080, () => {
+    console.log('http://localhost:8080 에서 서버 실행중')
+  })
+
+}).catch((err)=>{
+  console.log(err)   // 에러 출력 
 })
 
 // (GET) Rest API - 유저가 메인페이지('/') 접속하면 '반갑다'라는 글자 유저에게 전송
@@ -31,6 +49,7 @@ app.get('/', (요청, 응답)=>{
 // 근데 app.get 함수가 실행되고 나서 그 다음에 바로 콜백함수 () => {} 내에 있는 코드가 실행됨.
 // 함수 소괄호 안에 들어가는 함수를 '콜백함수'라고 부른다는 것만 상식으로 알아두자. 
 app.get('/news', (요청, 응답)=>{
+  // db.collection('post').insertOne({title : '어쩌구'})
   응답.send('오늘 비옴')
 }) 
 
@@ -53,6 +72,7 @@ app.get('/about', (요청, 응답)=>{
 // 4강 - 웹페이지 보내주려면 (라우팅)
 // 5강 - 웹페이지에 디자인 넣으려면
 // 6강 - MongoDB 호스팅받고 셋팅하기
+// 7강 - MongoDB와 서버 연결하려면
 
 // MongoDB 초기셋팅 및 호스팅 방법
 // 참고 URL - https://parkdoyoung98.tistory.com/entry/MongoDB-%EC%B4%88%EA%B8%B0%EC%85%8B%ED%8C%85-%EC%B4%88%EA%B0%84%EB%8B%A8-MongoDB-%EC%85%8B%ED%8C%85%ED%95%98%EA%B8%B0-feat-%EB%AC%B4%EB%A3%8C-%ED%98%B8%EC%8A%A4%ED%8C%85
@@ -92,3 +112,6 @@ app.get('/about', (요청, 응답)=>{
 //    이제 코드짜고 저장만 하면 끝임 
 //    터미널 열어서 실행되고있던거 ctrl + c 눌러서 끄고 아래 명령어 사용해서 nodemon 설치 진행
 // npm install -g nodemon
+
+// 5. 서버와 MongoDB 연결하기 위해 mongodb 라이브러리 설치해야 하므로 터미널창에 아래 명령어 입력 및 엔터 
+// npm install mongodb@5
