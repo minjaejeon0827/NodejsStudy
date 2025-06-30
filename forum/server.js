@@ -8,7 +8,7 @@ const app = express()
 app.use(express.static(__dirname + '/public'));
 
 // 설치한 mongodb 라이브러리 불러오는 코드
-const { MongoClient } = require('mongodb')
+const { MongoClient, ObjectId } = require('mongodb')
 
 let db
 // DB접속 URL은 어딨냐면 mongodb 사이트가서 connect 버튼이 어딘가 있을텐데 눌러서 Driver를 선택해보자. 
@@ -63,6 +63,15 @@ app.get('/about', (요청, 응답)=>{
   응답.sendFile(__dirname + '/about.html')   // 누가 자기소개페이지('/about') 방문시 about.html 파일 보내기 
 })
 
+// (GET) Rest API - 유저가 리스트페이지('/list') 접속하면 DB에 있던 첫글 제목(result[0].title)을 유저에게 전송 
+// 자바스크립트 Promise 문법 
+// 참고 URL - https://developer.mozilla.org/ko/docs/Web/JavaScript/Reference/Global_Objects/Promise
+app.get('/list', async (요청, 응답) => {
+  let result = await db.collection('post').find().toArray()
+  // console.log(result)
+  console.log(result[0])
+  응답.send(result[0].title)
+})
 
 // [코딩애플] Node.js, MongoDB 스터디 
 // Part 1 : (신버전)
@@ -73,6 +82,7 @@ app.get('/about', (요청, 응답)=>{
 // 5강 - 웹페이지에 디자인 넣으려면
 // 6강 - MongoDB 호스팅받고 셋팅하기
 // 7강 - MongoDB와 서버 연결하려면
+// 8강 - MongoDB에서 데이터 출력하기 (array/object 문법)
 
 // MongoDB 초기셋팅 및 호스팅 방법
 // 참고 URL - https://parkdoyoung98.tistory.com/entry/MongoDB-%EC%B4%88%EA%B8%B0%EC%85%8B%ED%8C%85-%EC%B4%88%EA%B0%84%EB%8B%A8-MongoDB-%EC%85%8B%ED%8C%85%ED%95%98%EA%B8%B0-feat-%EB%AC%B4%EB%A3%8C-%ED%98%B8%EC%8A%A4%ED%8C%85
